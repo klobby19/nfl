@@ -6,4 +6,6 @@
 
 ### I will also take into account the spread of game given by bettors to better predict the outcome of the games.
 
+### Credit to Pro Football Reference for the datasets.
+
 
