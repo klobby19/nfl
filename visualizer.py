@@ -10,7 +10,7 @@ def remove_spaces(list):
             result.append(item)
     return result
 
-def average_age_visualize():
+def average_age_visualize(save):
     data = pd.read_csv('average_age.txt')
     df = pd.DataFrame(data)
 
@@ -22,7 +22,9 @@ def average_age_visualize():
         team = row[1].replace('age', '').replace(' ','')
         age = row[2].replace('Name:', '')
         plt.scatter(team, float(age), c=numpy.random.rand(3,))
+    if save:
+        plt.savefig('avgage.png')
+    else:
+        plt.show()
 
-    plt.show()
-
-
+average_age_visualize(True)

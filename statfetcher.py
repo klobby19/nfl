@@ -52,6 +52,8 @@ teams_list_full = ['Arizona-Cardinals',
 
 file = open('average_age.txt', 'a')
 file.truncate(0)
+intro = 'team,age'
+file.write(intro + '\n')
 for team in teams_list_espn:
     url = 'https://www.espn.com/nfl/team/roster/_/name/%s' % team
     data = pd.read_html(url)
@@ -64,3 +66,4 @@ for team in teams_list_espn:
     string = str(team) + ',' + str(avg_age)
 
     file.write(string + '\n')
+file.close()
