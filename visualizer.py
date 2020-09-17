@@ -11,7 +11,7 @@ def remove_spaces(list):
     return result
 
 def average_age_visualize(save):
-    data = pd.read_csv('average_age.txt')
+    data = pd.read_csv('average_age.csv')
     df = pd.DataFrame(data)
 
     fig = plt.figure(figsize=(20,15))
@@ -27,4 +27,4 @@ def average_age_visualize(save):
     else:
         plt.show()
 
-average_age_visualize(True)
+average_age_visualize(False)
