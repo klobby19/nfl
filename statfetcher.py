@@ -5,6 +5,44 @@ from bs4 import BeautifulSoup
 
 linebackers = {}
 
+teams_list_pfr = ['crd','atl','rav','buf','car','chi','cin','cle','dal','den','det','gnb','htx','clt','jax','kan','sdg',
+            'ram','mia','min','nwe','nor','nyg','nyj','rai','phi','pit','sfo','sea','tam','oti','was']
+
+teams_list_espn = ['ari','atl','bal','buf','car','chi','cin','cle','dal','den','det','gb','hou','ind','jax','kc','lac',
+            'lar','mia','min','ne','no','nyg','nyj','lv','phi','pit','sf','sea','tb','ten','wsh']
+
+teams_list_full = ['Arizona-Cardinals',
+                    'Atlanta-Falcons',
+                    'Baltimore-Ravens',
+                    'Buffalo-Bills',
+                    'Carolina-Panthers',
+                    'Chicago-Bears',
+                    'Cincinnati-Bengals',
+                    'Dallas-Cowboys',
+                    'Denver-Broncos',
+                    'Detroit-Lions',
+                    'Green-Bay-Packers',
+                    'Houston-Texans',
+                    'Indianapolis-Colts',
+                    'Jacksonville-Jaguars',
+                    'Kansas-City-Chiefs',
+                    'Los-Angeles-Chargers',
+                    'Los-Angeles-Rams',
+                    'Miami-Dolphins',
+                    'Minnesota-Vikings',
+                    'New-England-Patriots',
+                    'New-Orleans-Saints',
+                    'New-York-Giants',
+                    'New-York-Jets',
+                    'Oakland-Raiders',
+                    'Philadelphia-Eagles',
+                    'Pittsburgh-Steelers',
+                    'San-Francisco-49ers',
+                    'Seattle-Seahawks',
+                    'Tampa-Bay-Buccaneers',
+                    'Tennessee-Titans',
+                    'Washington-Redskins']
+
 def list_avg(list):
     sum = 0
     for num in list:
@@ -45,47 +83,16 @@ def average_speed_lb_team():
                 lb.append(row[1]['Name'])
         linebackers[team] = lb
 
-teams_list_pfr = ['crd','atl','rav','buf','car','chi','cin','cle','dal','den','det','gnb','htx','clt','jax','kan','sdg',
-            'ram','mia','min','nwe','nor','nyg','nyj','rai','phi','pit','sfo','sea','tam','oti','was']
+def dline_stats():
+    url = 'https://www.footballoutsiders.com/stats/nfl/defensive-line/2020'
+    data = pd.read_html(url)[0]
+    data.to_csv('dline_stats.csv',index=False)
 
-teams_list_espn = ['ari','atl','bal','buf','car','chi','cin','cle','dal','den','det','gb','hou','ind','jax','kc','lac',
-            'lar','mia','min','ne','no','nyg','nyj','lv','phi','pit','sf','sea','tb','ten','wsh']
-
-teams_list_full = ['Arizona-Cardinals',
-                    'Atlanta-Falcons',
-                    'Baltimore-Ravens',
-                    'Buffalo-Bills',
-                    'Carolina-Panthers',
-                    'Chicago-Bears',
-                    'Cincinnati-Bengals',
-                    'Dallas-Cowboys',
-                    'Denver-Broncos',
-                    'Detroit-Lions',
-                    'Green-Bay-Packers',
-                    'Houston-Texans',
-                    'Indianapolis-Colts',
-                    'Jacksonville-Jaguars',
-                    'Kansas-City-Chiefs',
-                    'Los-Angeles-Chargers',
-                    'Los-Angeles-Rams',
-                    'Miami-Dolphins',
-                    'Minnesota-Vikings',
-                    'New-England-Patriots',
-                    'New-Orleans-Saints',
-                    'New-York-Giants',
-                    'New-York-Jets',
-                    'Oakland-Raiders',
-                    'Philadelphia-Eagles',
-                    'Pittsburgh-Steelers',
-                    'San-Francisco-49ers',
-                    'Seattle-Seahawks',
-                    'Tampa-Bay-Buccaneers',
-                    'Tennessee-Titans',
-                    'Washington-Redskins']
-
-url = 'https://www.playerprofiler.com/nfl/jordyn-brooks-stats/'
-page = urllib.request.urlopen(url)
-soup = BeautifulSoup(page, 'html.parser')
-div = soup.find_all('span')
-for element in div:
-    print(element)
+if __name__ == "__main__":
+    # url = 'https://www.playerprofiler.com/nfl/jordyn-brooks-stats/'
+    # page = urllib.request.urlopen(url)
+    # soup = BeautifulSoup(page, 'html.parser')
+    # div = soup.find_all('span')
+    # for element in div:
+    #     print(element)
+    dline_stats()
