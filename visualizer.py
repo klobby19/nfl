@@ -27,7 +27,7 @@ def average_age_visualize(save):
         age = row[2].replace('Name:', '')
         team = team.replace('\r\n', '\n').replace('\n','')
         image = team + '.png'
-        ax.scatter(team, float(age), c=numpy.random.rand(3,))
+        ax.scatter(team, float(age), c='w')
         ab = AnnotationBbox(OffsetImage(plt.imread(image,0)), (team, float(age)),frameon=False)
         ax.add_artist(ab)
     if save:

@@ -95,4 +95,5 @@ if __name__ == "__main__":
     # div = soup.find_all('span')
     # for element in div:
     #     print(element)
-    dline_stats()
+    data = pd.read_html('https://www.espn.com/nfl/team/schedule/_/name/sea')
+    print(data)
