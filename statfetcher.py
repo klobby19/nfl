@@ -2,8 +2,6 @@ import pandas as pd
 import urllib.request
 import bs4 as bs
 from bs4 import BeautifulSoup
-from pandas.core.base import DataError
-from pandas.io.sql import DatabaseError
 
 linebackers = {}
 

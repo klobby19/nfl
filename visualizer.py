@@ -45,5 +45,24 @@ def dline_visual(save):
     else:
         plt.show()
 
+def dline_physique_visual(save):
+    data = pd.read_csv('dl_average_physique.csv')
+    fig, (ax1,ax2) = plt.subplots(2,figsize=(20,15))
+    fig.suptitle('Average Height and Weight of each NFL team')
+    ax12 = ax1.twinx()
+    ax1.plot(data['team'],data['DE height'],'--',color='lightsteelblue',label='Height')
+    ax12.plot(data['team'],data['DE weight'],color='darksalmon',label='Weight')
+    ax22 = ax2.twinx()
+    ax2.plot(data['team'],data['DT height'],'--',color='lightsteelblue',label='Height')
+    ax22.plot(data['team'],data['DT weight'],color='darksalmon',label='Weight')
+    ax1.legend(loc=2)
+    ax12.legend(loc=0)
+    ax2.legend(loc=2)
+    ax22.legend(loc=0)
+    if save:
+        plt.savefig('dlinephys.png')
+    else:
+        plt.show()
+
 if __name__ == "__main__":
-    average_age_visualize(True)
+    dline_physique_visual(True)
