@@ -2,8 +2,12 @@ import pandas as pd
 import urllib.request
 import bs4 as bs
 from bs4 import BeautifulSoup
+from pandas.core.base import DataError
+from pandas.io.sql import DatabaseError
 
 linebackers = {}
+
+team_full_to_short = {}
 
 teams_list_pfr = ['crd','atl','rav','buf','car','chi','cin','cle','dal','den','det','gnb','htx','clt','jax','kan','sdg',
             'ram','mia','min','nwe','nor','nyg','nyj','rai','phi','pit','sfo','sea','tam','oti','was']
@@ -42,6 +46,17 @@ teams_list_full = ['Arizona-Cardinals',
                     'Tampa-Bay-Buccaneers',
                     'Tennessee-Titans',
                     'Washington-Redskins']
+
+def convert_ft_inches(num):
+    result = 0
+    height = num.split('\'')
+    result += float(height[0]) * 12
+    result += float(height[1].replace(' ','').replace('\"',''))
+    return result
+
+def connect_team_name():
+    for index in range(len(teams_list_full)):
+        team_full_to_short[teams_list_full[index]] = teams_list_espn[index]
 
 def list_avg(list):
     sum = 0
@@ -88,6 +103,37 @@ def dline_stats():
     data = pd.read_html(url)[0]
     data.to_csv('dline_stats.csv',index=False)
 
+def dline_physique():
+    file = open('average_physique.csv', 'a')
+    file.truncate(0)
+    intro = 'team,DE height,DE weight,DT height,DT weight'
+    file.write(intro + '\n')
+    for team in teams_list_espn:
+        url = 'https://www.espn.com/nfl/team/roster/_/name/%s/' % team
+        data = pd.DataFrame(pd.read_html(url)[1])
+        # dend = {}
+        # dtackle = {}
+        total_weight_end = []
+        total_height_end = []
+        total_weight_tackle = []
+        total_height_tackle = []
+        for row in data.iterrows():
+            # stat = []
+            # stat.append(row[1]['HT'])
+            # stat.append(row[1]['WT'])
+            if row[1]['POS'] == 'DE':
+                    # dend[row[1]['Name']] = stat
+                    total_weight_end.append(float(row[1]['WT'].split(' ')[0]))
+                    total_height_end.append(convert_ft_inches(row[1]['HT']))
+            if row[1]['POS'] == 'DT':
+                    # dtackle[row[1]['Name']] = stat
+                    total_weight_tackle.append(float(row[1]['WT'].split(' ')[0]))
+                    total_height_tackle.append(convert_ft_inches(row[1]['HT']))
+            # stat.clear
+        string = str(team) + ',' + str(list_avg(total_height_end)) + ',' + str(list_avg(total_weight_end)) + ',' + str(list_avg(total_height_tackle)) + ',' + str(list_avg(total_weight_tackle))
+        file.write(string + '\n')
+    file.close()
+
 if __name__ == "__main__":
     # url = 'https://www.playerprofiler.com/nfl/jordyn-brooks-stats/'
     # page = urllib.request.urlopen(url)
@@ -95,5 +141,7 @@ if __name__ == "__main__":
     # div = soup.find_all('span')
     # for element in div:
     #     print(element)
-    data = pd.read_html('https://www.espn.com/nfl/team/schedule/_/name/sea')
-    print(data)
+    # data = pd.read_html('https://www.espn.com/nfl/team/schedule/_/name/sea')
+    # print(data)
+
+    dline_physique()
