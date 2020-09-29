@@ -46,15 +46,17 @@ def dline_visual(save):
         plt.show()
 
 def dline_physique_visual(save):
-    data = pd.read_csv('dl_average_physique.csv')
+    data = pd.read_csv('Data/dl_average_physique.csv')
     fig, (ax1,ax2) = plt.subplots(2,figsize=(20,15))
     fig.suptitle('Average Height and Weight of each NFL team')
     ax12 = ax1.twinx()
     ax1.plot(data['team'],data['DE height'],'--',color='lightsteelblue',label='Height')
     ax12.plot(data['team'],data['DE weight'],color='darksalmon',label='Weight')
+    ax1.set_title('DE physique')
     ax22 = ax2.twinx()
     ax2.plot(data['team'],data['DT height'],'--',color='lightsteelblue',label='Height')
     ax22.plot(data['team'],data['DT weight'],color='darksalmon',label='Weight')
+    ax2.set_title('DT physique')
     ax1.legend(loc=2)
     ax12.legend(loc=0)
     ax2.legend(loc=2)
@@ -63,6 +65,24 @@ def dline_physique_visual(save):
         plt.savefig('dlinephys.png')
     else:
         plt.show()
+
+def dline_physique_by_team_sack_rate():
+    df = pd.read_csv('dl_average_physique.csv')
+    data = pd.read_html('https://www.footballoutsiders.com/stats/nfl/defensive-line/2020')[0]
+    pass_prot_data = data['PASS PROTECTION']
+    teams = pass_prot_data['Team']
+    adj_sack_rate = pass_prot_data['Adjusted  Sack Rate']
+    ordered_list = []
+    teams_rate = {}
+    for num in range(len(teams)):
+        teams_rate[teams[num]] = adj_sack_rate[num]
+    for team in df['team']:
+        if team.upper() == 'WSH':
+            ordered_list.append(float(teams_rate['WAS'].replace('%','')))
+        else:
+            ordered_list.append(float(teams_rate[team.upper()].replace('%','')))
+    df['Sack Rate'] = ordered_list
+    df = df.sort_values(by=['Sack Rate'])
 
 if __name__ == "__main__":
     dline_physique_visual(True)
