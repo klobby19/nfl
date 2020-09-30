@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('dl_average_physique.csv')
+df = pd.read_csv('Data/dl_average_physique.csv')
 data = pd.read_html('https://www.footballoutsiders.com/stats/nfl/defensive-line/2020')[0]
 pass_prot_data = data['PASS PROTECTION']
 teams = pass_prot_data['Team']
