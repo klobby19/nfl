@@ -6,6 +6,12 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 plt.style.use('seaborn-deep')
 
+def avg_list(list):
+    sum = 0
+    for num in list:
+        sum += num
+    return sum / len(list)
+
 def remove_spaces(list):
     result = []
     for item in list:
@@ -14,7 +20,7 @@ def remove_spaces(list):
     return result
 
 def average_age_visualize(save):
-    data = pd.read_csv('average_age.csv')
+    data = pd.read_csv('Data/average_age.csv')
     df = pd.DataFrame(data)
 
     fig,ax = plt.subplots(figsize=(20,15))
@@ -30,6 +36,7 @@ def average_age_visualize(save):
         ax.scatter(team, float(age), c='w')
         ab = AnnotationBbox(OffsetImage(plt.imread(image,0)), (team, float(age)),frameon=False)
         ax.add_artist(ab)
+    ax.axhline(y=avg_list(df['age']), color='black')
     if save:
         plt.savefig('avgage.png')
     else:
@@ -85,4 +92,4 @@ def dline_physique_by_team_sack_rate():
     df = df.sort_values(by=['Sack Rate'])
 
 if __name__ == "__main__":
-    dline_physique_visual(True)
+    average_age_visualize(True)

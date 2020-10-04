@@ -20,6 +20,7 @@ teams_list_full = ['Arizona-Cardinals',
                     'Carolina-Panthers',
                     'Chicago-Bears',
                     'Cincinnati-Bengals',
+                    'Cleveland-Browns',
                     'Dallas-Cowboys',
                     'Denver-Broncos',
                     'Detroit-Lions',
@@ -132,6 +133,15 @@ def dline_physique():
         file.write(string + '\n')
     file.close()
 
+def logo_fetch():
+    for team in team_full_to_short:
+        url = 'http://loodibee.com/wp-content/uploads/nfl-%s-team-logo-2.png' % team.lower()
+        save_name = team_full_to_short.get(team) + '.png'
+        try:
+            urllib.request.urlretrieve(url, save_name)
+        except:
+            print(team + ' did not have a logo')
+
 if __name__ == "__main__":
     # url = 'https://www.playerprofiler.com/nfl/jordyn-brooks-stats/'
     # page = urllib.request.urlopen(url)
@@ -142,4 +152,16 @@ if __name__ == "__main__":
     # data = pd.read_html('https://www.espn.com/nfl/team/schedule/_/name/sea')
     # print(data)
 
-    dline_physique()
+    # for team in teams_list_pfr:
+    #     url = 'https://www.pro-football-reference.com/teams/%s/2020.htm' % team
+    #     data = pd.read_html(url)
+    #     print(data)
+    # response = urllib.request.urlopen('https://www.pro-football-reference.com/teams/sea/2020.htm')
+    # html = response.read()
+    # soup = BeautifulSoup(html,features='lxml')
+
+    # table = soup.find("div", {"id": "all_defense"})
+
+    # print(pd.read_html(table))
+    connect_team_name()
+    logo_fetch()

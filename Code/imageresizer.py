@@ -3,7 +3,7 @@ from PIL import Image
 teams_list_espn = ['ari','atl','bal','buf','car','chi','cin','cle','dal','den','det','gb','hou','ind','jax','kc','lac',
             'lar','mia','min','ne','no','nyg','nyj','lv','phi','pit','sf','sea','tb','ten','wsh']
 
-basewidth = 25
+basewidth = 100
 
 for team in teams_list_espn:
     img_path = team + '.png'
