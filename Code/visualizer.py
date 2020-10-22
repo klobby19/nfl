@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy
+import numpy as np
 from matplotlib.pyplot import figure
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
@@ -91,5 +91,17 @@ def dline_physique_by_team_sack_rate():
     df['Sack Rate'] = ordered_list
     df = df.sort_values(by=['Sack Rate'])
 
+def visualize_punts_vs_tds():
+    df = pd.read_csv('punting_vs_td.csv')
+    m, b = np.polyfit(df['punts'], df['td'], 1)
+    plt.figure(figsize=(20,15))
+    plt.scatter(df['punts'], df['td'],color='dodgerblue')
+    plt.plot(df['punts'], m*df['punts'] + b, color='tomato')
+    plt.xlim([0,50])
+    plt.ylim([5,28])
+    plt.ylabel('Total TDs')
+    plt.xlabel('Number of punts')
+    plt.savefig('puntingvstds.png')
+
 if __name__ == "__main__":
-    average_age_visualize(True)
+    visualize_punts_vs_tds()

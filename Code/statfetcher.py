@@ -142,6 +142,20 @@ def logo_fetch():
         except:
             print(team + ' did not have a logo')
 
+def punting_vs_td():
+    file = open('punting_vs_td.csv', 'a')       
+    file.truncate(0)
+    intro = 'team,td,punts'
+    file.write(intro + '\n')
+    for team in teams_list_espn:
+        url = 'https://www.espn.com/nfl/team/stats/_/name/%s/' % team
+        data = pd.read_html(url)
+        total_td = pd.DataFrame(data[9])['Touchdowns']['TD'].iloc[-1]
+        punting_n = pd.DataFrame(data[15])['PUNTS'].iloc[-1]
+        string = team + ',' + str(total_td) + ',' + str(punting_n)
+        file.write(string + '\n')
+    file.close()
+
 if __name__ == "__main__":
     # url = 'https://www.playerprofiler.com/nfl/jordyn-brooks-stats/'
     # page = urllib.request.urlopen(url)
@@ -163,5 +177,10 @@ if __name__ == "__main__":
     # table = soup.find("div", {"id": "all_defense"})
 
     # print(pd.read_html(table))
-    connect_team_name()
-    logo_fetch()
+    # connect_team_name()
+    # logo_fetch()
+    # data = pd.read_html('https://www.espn.com/nfl/team/stats/_/name/sea/')
+    # print(data[9])
+    # print(data[15]
+    punting_vs_td()
+
