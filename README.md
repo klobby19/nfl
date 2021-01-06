@@ -6,6 +6,10 @@ Simple scripts to scrape NFL data from various websites.
 
 Visuals are put into the visuals folder.
 
+## Example Visuals
+
+![](https://github.com/klobby19/nfl/blob/master/Visuals/avgage.png?raw=true)
+
 ## Data Sources
 
 Credit to http://loodibee.com/nfl/ for the team logo pictures.  
