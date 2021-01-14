@@ -1,0 +1,72 @@
+---
+title: "nflfastr"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r install}
+install.packages("nflfastR")
+install.packages("DBI")
+install.packages("RSQLite")
+```
+
+```{r load}
+library(nflfastR)
+library(tidyverse)
+library(dplyr, warn.conflicts = FALSE)
+library(DBI)
+library(RSQLite)
+```
+
+```{r load schedule}
+schedule <- fast_scraper_schedules(2020)
+```
+
+```{r packers schedule}
+gb_home <- schedule %>% filter(home_team ==  'GB')
+gb_away <- schedule %>% filter(away_team == 'GB')
+gb_full <- rbind(gb_home, gb_away)
+gb_gameids <- gb_full %>% select(game_id)
+```
+
+```{r epa}
+pbp_df <- build_nflfastR_pbp(unlist(gb_gameids))
+```
+
+```{r calculate home epa}
+gb_home_offense_df <- pbp_df %>% filter(home_team == 'GB') %>% filter(posteam == 'GB')
+gb_away_offense_df <- pbp_df %>% filter(away_team == 'GB') %>% filter(posteam == 'GB')
+
+home_offense_epa_play <- sum(gb_home_offense_df %>% select(epa)) / gb_home_offense_df %>% count()
+away_offense_epa_play <- sum(gb_away_offense_df %>% select(epa)) / gb_away_offense_df %>% count()
+```
+
+```{r temp}
+
+temp_pbp <- fast_scraper(unlist(gb_gameids))
+
+```
+
+```{r opponent epa}
+team_epa <- function(team) {
+  team_gameids <- schedule %>% filter(home_team == team | away_team == team) %>% select(game_id)
+  team_pbp_df <- build_nflfastR_pbp(unlist(team_gameids))
+  
+  team_offense <- team_pbp_df %>% filter(posteam == team)
+  team_defense <- team_pbp_df %>% filter(defteam == team)
+  
+  offense_epa_play <- sum(team_offense %>% select(epa)) / team_offense %>% count()
+  defense_epa_play <- sum(team_defense %>% select(epa)) / team_defense %>% count()
+  
+  c(team, offense_epa_play, defense_epa_play)
+}
+```
