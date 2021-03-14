@@ -2,11 +2,15 @@
 
 ## Introduction
 
-Simple scripts to scrape NFL data from various websites. 
+Simple scripts to scrape NFL data from various websites.
 
 Visuals are put into the visuals folder.
 
 ## Example Visuals
+
+![](https://github.com/klobby19/nfl/blob/master/Visuals/russpete.png?raw=true)
+
+![](https://github.com/klobby19/nfl/blob/master/Visuals/puntingvstds.png?raw=true)
 
 ![](https://github.com/klobby19/nfl/blob/master/Visuals/avgage.png?raw=true)
 
