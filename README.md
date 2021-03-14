@@ -8,11 +8,11 @@ Visuals are put into the visuals folder.
 
 ## Example Visuals
 
-![](https://github.com/klobby19/nfl/blob/master/finished\ visuals/russpete.png?raw=true)
+![](https://github.com/klobby19/nfl/blob/master/finished\visuals/russpete.png?raw=true)
 
-![](https://github.com/klobby19/nfl/blob/master/finished\ visuals/puntingvstds.png?raw=true)
+![](https://github.com/klobby19/nfl/blob/master/finished\visuals/puntingvstds.png?raw=true)
 
-![](https://github.com/klobby19/nfl/blob/master/finished\ visuals/avgage.png?raw=true)
+![](https://github.com/klobby19/nfl/blob/master/finished\visuals/avgage.png?raw=true)
 
 ## Data Sources
 
