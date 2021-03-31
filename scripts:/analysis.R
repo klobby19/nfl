@@ -1,6 +1,7 @@
 library(tidyverse)
 library(reshape2)
 library(nflfastR)
+library(rvest)
 
 # passing <- read.csv("../raw/data/nflpassing.csv")
 # staffordp <- read.csv("../raw/data/nflpassing.csv")
@@ -107,3 +108,39 @@ pbp_sea_12_20 %>%
   filter(passer_player_name == "R.Wilson" & season == 2020) %>% 
   group_by(week, qb_dropback) %>% 
   summarize(epa = mean(qb_epa, na.rm = T))
+
+### T LOCK --------
+url <- "https://www.pro-football-reference.com/years/2020/receiving.htm"
+
+html <- read_html(url)
+
+table <- html %>% 
+  html_nodes("table") %>% 
+  html_table() %>% 
+  data.frame()
+
+wr_table <- table %>% 
+  filter(str_to_lower(Pos) == "wr") %>% 
+  filter(as.numeric(Tgt) >= 50)
+
+wr_table$Ctch. <- gsub("%", "", wr_table$Ctch.) %>% 
+  as.numeric() / 100
+
+tyler_ctch <- wr_table %>% 
+  filter(Player == "Tyler Lockett") %>% 
+  pull(Ctch.)
+
+ggplot(wr_table) +
+  geom_density(aes(Ctch.), color = "#2C3E50", fill = "lightblue") +
+  geom_segment(aes(x = tyler_ctch , y = 0, xend = tyler_ctch, yend = 2.35), color = "red") +
+  theme_minimal()
+  
+ggplot(wr_table, aes(Ctch.)) +
+  stat_function(fun = dnorm, n = nrow(wr_table), args = list(mean = mean(wr_table$Ctch.), sd = sd(wr_table$Ctch.))) + ylab("") +
+  scale_y_continuous(breaks = NULL)  +
+  annotate("text", x = tyler_ctch + 0.02, y = 2, label = "Tyler Lockett")+
+  geom_hline(yintercept = 0) +
+  geom_segment(aes(x = mean(Ctch.) , y = 0, xend = mean(Ctch.), yend = 5.28)) +
+  geom_segment(aes(x = tyler_ctch , y = 0, xend = tyler_ctch, yend = 2), color = "red") +
+  theme_minimal() +
+  labs(title = "2020 NFL Season")
