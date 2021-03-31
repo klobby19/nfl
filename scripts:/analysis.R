@@ -1,4 +1,5 @@
 library(tidyverse)
+library(reshape2)
 library(nflfastR)
 
 # passing <- read.csv("../raw/data/nflpassing.csv")
@@ -67,3 +68,42 @@ pbp_sea_12_20 %>%
   ggplot() +
   geom_bar(mapping = aes(x = spread_line, y = epa_play), stat = "identity", fill = "#2C3E50") +
   theme_minimal()
+
+pbp_sea_12_20 %>% 
+  filter(passer_player_name == "R.Wilson") %>% 
+  group_by(season) %>% 
+  summarize(avg_yac_epa = mean(yac_epa, na.rm = T), avg_yac = mean(yards_after_catch, na.rm = T)) %>% 
+  ggplot() +
+  geom_line(aes(x = season, y = avg_yac_epa)) +
+  geom_line(aes(x = season, y = avg_yac)) +
+  theme_minimal()
+
+pbp_sea_12_20 %>% 
+  filter(passer_player_name == "R.Wilson") %>% 
+  group_by(season, down) %>% 
+  summarize(epa_play = mean(qb_epa, na.rm = T), down = as.character(down)) %>% 
+  filter(down != "NA") %>% 
+  ggplot() +
+  geom_line(aes(x = season, y = epa_play, color = down)) +
+  theme_minimal()
+
+pbp_sea_12_20 %>% 
+  filter(passer_player_name == "R.Wilson" & season_type == "REG") %>% 
+  group_by(season, game_id) %>% 
+  summarize(epa = sum(epa, na.rm = T)) %>% 
+  group_by(season) %>%
+  summarize(above = sum(epa > 0), below = sum(epa < 0)) %>%
+  rename("epa > 0" = "above", "epa < 0" = "below") %>% 
+  melt(id.vars = "season") %>% 
+  rename("epa" = "variable") %>%
+  ggplot() +
+  geom_bar(aes(x = as.factor(season), y = value, fill = epa), stat = "identity", position="dodge", width = 0.6, alpha = 0.6) +
+  scale_fill_discrete(name = NULL) + 
+  scale_y_discrete() +
+  theme_minimal() +
+  labs(x = "Season", y = "Games")
+
+pbp_sea_12_20 %>% 
+  filter(passer_player_name == "R.Wilson" & season == 2020) %>% 
+  group_by(week, qb_dropback) %>% 
+  summarize(epa = mean(qb_epa, na.rm = T))
